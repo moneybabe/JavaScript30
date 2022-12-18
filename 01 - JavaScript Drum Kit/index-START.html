@@ -69,11 +69,11 @@
     keyChange.classList.add('playing'); // change key layout
   }
 
-  // when using arrow function, this references the window object instead of key object
+  // when using arrow function, this references the window object instead of key object in the call back function
   function removeTransition(event) {
     if (event.propertyName !== 'transform') return;
     this.classList.remove('playing');
-  } 
+  }
 
   window.addEventListener('keydown', keyPressed); // listen for 'keydown' event and execute keyPressed
   
