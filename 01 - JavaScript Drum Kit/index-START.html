@@ -58,6 +58,27 @@
   <audio data-key="76" src="sounds/tink.wav"></audio>
 
 <script>
+  
+  // what happens when a corresponding key is pressed
+  const keyPressed = (event) => {
+    const audioClip = document.querySelector(`audio[data-key="${event.keyCode}"]`);
+    const keyChange = document.querySelector(`.key[data-key="${event.keyCode}"]`);
+    if (!audioClip) return; // return if no corresponding key
+    audioClip.currentTime = 0; // reset audio playtime to the beginning
+    audioClip.play(); // play audio src 
+    keyChange.classList.add('playing'); // change key layout
+  }
+
+  // when using arrow function, this references the window object instead of key object
+  function removeTransition(event) {
+    if (event.propertyName !== 'transform') return;
+    this.classList.remove('playing');
+  } 
+
+  window.addEventListener('keydown', keyPressed); // listen for 'keydown' event and execute keyPressed
+  
+  const keys = document.querySelectorAll('.key');
+  keys.forEach(key => key.addEventListener('transitionend', removeTransition));
 
 </script>
 
