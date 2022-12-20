@@ -12,15 +12,33 @@
     <input id="spacing" type="range" name="spacing" min="10" max="200" value="10" data-sizing="px">
 
     <label for="blur">Blur:</label>
-    <input id="blur" type="range" name="blur" min="0" max="25" value="10" data-sizing="px">
+    <input id="blur" type="range" name="blur" min="0" max="25" value="0" data-sizing="px">
 
-    <label for="base">Base Color</label>
-    <input id="base" type="color" name="base" value="#ffc600">
+    <label for="base">Base Color:</label>
+    <input id="base" type="color" name="base" value="#bada55">
   </div>
 
   <img src="https://source.unsplash.com/7bwQXzbF6KE/800x500">
 
   <style>
+    /* 
+      define the changina variables in :root 
+    */
+    :root {
+      --spacing: 10px;
+      --base: #bada55;
+      --blur: 0px;
+    }
+
+    img {
+      padding: var(--spacing);
+      filter: blur(var(--blur));
+      background: var(--base);
+    }
+
+    .hl {
+      color: var(--base);
+    }
 
     /*
       misc styles, nothing to do with CSS variables
@@ -45,6 +63,20 @@
   </style>
 
   <script>
+    const inputs = document.querySelectorAll('.controls input');
+
+    function handleUpdate () {
+      if (this.name == 'spacing' || this.name == 'blur') {
+        document.documentElement.style.setProperty(`--${this.name}`, this.value + 'px');
+      } else {
+        document.documentElement.style.setProperty(`--${this.name}`, this.value);
+      }
+    }
+
+    // listen for 'mousemove' and 'change' event for each input object, and update the corresponding variable in :root with the new input value
+    inputs.forEach(input => input.addEventListener('change', handleUpdate));
+    inputs.forEach(input => input.addEventListener('mousemove', handleUpdate));
+
   </script>
 
 </body>
