@@ -5,8 +5,62 @@
   <title>HTML5 Canvas</title>
 </head>
 <body>
+<button type="button">Clear Canvas</button>
 <canvas id="draw" width="800" height="800"></canvas>
 <script>
+  const canvas = document.querySelector('canvas');
+  const ctx = canvas.getContext('2d');
+  canvas.width = `${window.innerWidth}`;
+  canvas.height = `${window.innerHeight}`;
+  ctx.strokeStyle = 'BADA55';
+  ctx.lineWidth = 10;
+  ctx.lineCap = 'round';
+  ctx.lineJoin = 'miter';
+
+  const drawStatus = {
+    prevX: 0,
+    prevY: 0,
+    isDrawing: false,
+    direction: true,
+    colorIndex: 0
+  };
+
+  function draw(e) {
+    if (!drawStatus.isDrawing) return;
+    ctx.strokeStyle = `hsl(${drawStatus.colorIndex}, 50%, 50%)`;
+    ctx.beginPath();
+    ctx.moveTo(drawStatus.prevX, drawStatus.prevY);
+    ctx.lineTo(e.offsetX, e.offsetY);
+    ctx.stroke();  
+    [drawStatus.prevX, drawStatus.prevY] = [e.offsetX, e.offsetY];
+    if (drawStatus.direction) {
+      ctx.lineWidth++;
+    } else {
+      ctx.lineWidth--;
+    }
+    if (ctx.lineWidth >= 50 || ctx.lineWidth <= 10) {
+      drawStatus.direction = !drawStatus.direction;
+    }
+    drawStatus.colorIndex += 5;
+    drawStatus.colorIndex >= 360? drawStatus.colorIndex = drawStatus.colorIndex % 360 : false;
+    console.log(drawStatus.colorIndex);
+  }
+
+  canvas.addEventListener('mousedown', (e) => {
+    drawStatus.isDrawing = true;
+    [drawStatus.prevX, drawStatus.prevY] = [e.offsetX, e.offsetY];
+  });
+  canvas.addEventListener('mousemove', draw);
+  canvas.addEventListener('mouseup', () => drawStatus.isDrawing = false);
+  canvas.addEventListener('mouseout', () => drawStatus.isDrawing = false);
+
+  const clearButton = document.querySelector('button');
+  clearButton.addEventListener('click', () => ctx.clearRect(0, 0, canvas.width, canvas.height));
+  
+
+
+
+
 </script>
 
 <style>
