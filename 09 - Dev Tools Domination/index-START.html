@@ -16,30 +16,69 @@
       p.style.color = '#BADA55';
       p.style.fontSize = '50px';
     }
-
+    
     // Regular
+    console.log('gm');
 
     // Interpolated
+    console.log('This is a %s string', '(STRING)');
+
+    const variable = '(STRING)';
+    console.log(`This is a ${variable} string`);    // same effect with ESP 6
 
     // Styled
+    console.log('This is a %c bigger text', 'font-size: 50px');   // style console with css
 
     // warning!
+    console.warn('WARNING!');
 
     // Error :|
+    console.error('ERROR!');
 
     // Info
+    console.info('INFO');
 
     // Testing
+    console.assert(1 === 2, 'This is wrong');
 
     // clearing
+    console.clear();
 
     // Viewing DOM Elements
+    const p = document.querySelector('p');
+    console.dir(p);
+
+    console.clear();
 
     // Grouping together
+    dogs.forEach(dog => {
+      console.groupCollapsed(`${dog.name}`);
+      console.log(`This is ${dog.name}`);
+      console.log(`${dog.name} is ${dog.age} years old`);
+      console.log(`${dog.name} is ${dog.age * 7} dog years old`);
+      console.groupEnd(`${dog.name}`);
+    })
 
     // counting
-
+    console.count('Neo');
+    console.count('Neo');
+    console.count('Ray');
+    console.count('Neo');
+    console.count('Neo');
+    console.count('Ray');
+    console.count('Ray');
+    console.count('Neo');
+    console.count('Neo');
+    console.count('Ray');
+    
     // timing
+    console.time('fetch time');
+    fetch('https://api.github.com')
+      .then(response => response.json())
+      .then(data => {
+        console.timeEnd('fetch time');
+        console.log(data);
+      });
 
   </script>
 </body>
