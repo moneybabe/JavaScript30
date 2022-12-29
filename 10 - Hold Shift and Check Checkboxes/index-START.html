@@ -95,7 +95,67 @@
     </div>
   </div>
 
-<script>
-</script>
+  <script>
+    // let lastChecked;
+    
+    // function shiftCheck(e) {
+      //   let inBetween = false;
+      
+      //   if (e.shiftKey) {
+        //     checkboxes.forEach(checkbox => {
+          
+          //       if (checkbox === this || checkbox === lastChecked) {
+    //         inBetween = !inBetween;
+    //       }
+    
+    //       if (inBetween) {
+      //         checkbox.checked = true;
+      //       }
+      //     })
+      //     return
+      //   }
+      
+      //   lastChecked = this;
+      // }
+    const checkboxes = [...document.querySelectorAll('input')];
+      
+    let lastChecked;
+    let lastEndPoint;
+    
+    function shiftCheck(e) {
+      // case: pressed shift initially
+      if (e.shiftKey && !lastChecked) {
+        checkboxes.slice(0, checkboxes.indexOf(this) + 1).forEach(checkbox => checkbox.checked = true);
+        lastChecked = checkboxes[0];
+        return
+      }
+      
+      if (e.shiftKey) {
+        // uncheck all checkboxes between lastEndPoint and lastChecked first
+        if (checkboxes.indexOf(lastChecked) < checkboxes.indexOf(lastEndPoint)){
+          checkboxes.slice(checkboxes.indexOf(lastChecked), checkboxes.indexOf(lastEndPoint) + 1).forEach(checkbox => checkbox.checked = false);
+        } else {
+          checkboxes.slice(checkboxes.indexOf(lastEndPoint), checkboxes.indexOf(lastChecked) + 1).forEach(checkbox => checkbox.checked = false);
+        }
+        
+        // check all checkboxes between lastChecked and this
+        if (checkboxes.indexOf(lastChecked) < checkboxes.indexOf(this)){
+          checkboxes.slice(checkboxes.indexOf(lastChecked), checkboxes.indexOf(this) + 1).forEach(checkbox => checkbox.checked = true);
+        } else {
+          checkboxes.slice(checkboxes.indexOf(this), checkboxes.indexOf(lastChecked) + 1).forEach(checkbox => checkbox.checked = true);
+        }
+        
+        lastEndPoint = this;
+        console.log(lastEndPoint);
+        return
+      }
+
+      lastChecked = this;
+      lastEndPoint = this;
+    }
+
+    checkboxes.forEach(checkbox => checkbox.addEventListener('click', shiftCheck));
+
+  </script>
 </body>
 </html>
