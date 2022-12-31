@@ -7,6 +7,21 @@
 </head>
 <body>
 <script>
+  const inputArray = [];
+  const bingoWord = 'neo.lky';
+
+  function checkBingo(e) {
+    inputArray.push(e.key);
+    inputArray.length > 7 ? inputArray.shift() : null;
+    console.log(inputArray);
+    if (inputArray.join('') === bingoWord) {
+      console.warn('BINGO');
+      cornify_add();
+    } 
+  }
+
+  window.addEventListener('keyup', checkBingo);
+
 </script>
 </body>
 </html>
