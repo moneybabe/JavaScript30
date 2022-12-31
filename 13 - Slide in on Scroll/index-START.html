@@ -43,6 +43,17 @@
   </div>
 
   <script>
+    const images = [...document.querySelectorAll('img')];
+    const imageObjs = [];
+
+    function imagesMap () {
+      images.forEach(image => imageObjs.push({imageDOM: image, yHeight: image.y, ySlideHeight: (image.y + image.height * 3 /4), slided: false}));
+    }
+
+    setTimeout(imagesMap, 1000);
+
+    
+
     function debounce(func, wait = 20, immediate = true) {
       var timeout;
       return function() {
@@ -56,7 +67,17 @@
         timeout = setTimeout(later, wait);
         if (callNow) func.apply(context, args);
       };
+    } 
+    
+    function slideInOut () {
+      const imagesSlideToggle = imageObjs.forEach(imageObj => {
+        (this.scrollY + this.innerHeight) > imageObj.ySlideHeight ? imageObj.slided = true : imageObj.slided = false;
+        console.log(imageObjs);
+        imageObj.slided ? imageObj.imageDOM.classList.add('active') : imageObj.imageDOM.classList.remove('active');
+      });
     }
+
+    window.addEventListener('scroll', debounce(slideInOut));
 
   </script>
 
