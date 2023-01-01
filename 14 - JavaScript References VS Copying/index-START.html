@@ -8,6 +8,14 @@
 
   <script>
     // start with strings, numbers and booleans
+    /* strins, numbers, booleans are all passing by value */
+    let string0 = 'gm';
+    let string1 = string0;
+    string0 = 'hi';
+
+    let num0 = 15;
+    let num1 = num0;
+    num0 = 10;
 
     // Let's say we have an array
     const players = ['Wes', 'Sarah', 'Ryan', 'Poppy'];
@@ -27,17 +35,21 @@
     // So, how do we fix this? We take a copy instead!
 
     // one way
+    let array0 = [1,2,3,4,5];
+    let array1 = array0.slice();
 
     // or create a new array and concat the old one in
+    let array2 = [].concat(array1);
 
     // or use the new ES6 Spread
+    let array3 = [...array1];   // preferred
 
     // now when we update it, the original one isn't changed
 
     // The same thing goes for objects, let's say we have a person object
 
     // with Objects
-    const person = {
+    const person0 = {
       name: 'Wes Bos',
       age: 80
     };
@@ -45,10 +57,34 @@
     // and think we make a copy:
 
     // how do we take a copy instead?
+    const person1 = Object.assign({}, person0);
+    const person2 = Object.assign({}, person0, { name: 'neo', school: 'ucsd' });  // copied person1 to an empty object and overwrite the attributes with { name: 'neo', school: 'ucsd' }
 
     // We will hopefully soon see the object ...spread
+    const person4 = {...person0};   // already available 
 
     // Things to note - this is only 1 level deep - both for Arrays and Objects. lodash has a cloneDeep method, but you should think twice before using it.
+    /* if only shallow clone, the secondary layer will be passing by reference */
+
+    const wes0 = {
+      name: 'Wes',
+      age: 100,
+      social: {
+        twitter: '@wesbos',
+        facebook: 'wesbos.developer'
+      }
+    };
+
+    const wes1 = {...wes0};
+    wes1.social.twitter = '@neo.lky';
+
+    /* poor people deepClone (clone all layers) */
+    console.time('poor people deep clone');
+    const wes2 = JSON.parse(JSON.stringify(wes0));
+    console.timeEnd('poor people deep clone');
+    
+    wes2.social.twitter = '@random';
+    
 
   </script>
 
