@@ -22,13 +22,134 @@
     <form class="add-items">
       <input type="text" name="item" placeholder="Item Name" required>
       <input type="submit" value="+ Add Item">
+      <input type="button" value="Delete All">
     </form>
   </div>
 
 <script>
   const addItems = document.querySelector('.add-items');
   const itemsList = document.querySelector('.plates');
-  const items = [];
+  const deleteButton = document.querySelector('input[type="button"]');
+
+  let items;
+  localStorage.getItem('items') ? items = JSON.parse(localStorage.getItem('items')) : items = [];
+
+  if (items.length) {
+    const displayHTML = items.map((item, i) => {
+        return `
+          <li>
+            <input type="checkbox" data-index=${i} id="item${i}" ${item.checked && 'checked'}/>
+            <label for="item${i}">${item.itemName}</label>
+          </li>
+        `
+      }).join('');
+    itemsList.innerHTML = displayHTML;
+  } 
+
+  function newItem(e) {
+    e.preventDefault();
+    let itemName = this.querySelector('input[name="item"]').value;
+    items.push({ itemName, checked: false });
+    if (items.length === 1) {
+      itemsList.innerHTML = `
+        <li>
+          <input type="checkbox" data-index=${items.length - 1} id="item${items.length - 1}"/>
+          <label for="item${items.length - 1}">${itemName}</label>
+        </li>
+      `;
+    } else {
+      itemsList.innerHTML += `
+        <li>
+          <input type="checkbox" data-index=${items.length - 1} id="item${items.length - 1}"/>
+          <label for="item${items.length - 1}">${itemName}</label>
+        </li>
+      `;
+    }
+    localStorage.setItem('items', JSON.stringify(items));
+    this.reset();
+  }
+  
+  function checkItem(e) {
+    if (!e.target.matches('input')) return;
+    const index = e.target.dataset.index;
+    items[index].checked = !items[index].checked;
+    localStorage.setItem('items', JSON.stringify(items));
+  }
+
+  function deleteAll(e) {
+    e.preventDefault();
+    console.log('gm');
+    items = [];
+    localStorage.removeItem('items');
+    itemsList.innerHTML = '<li>Loading Tapas...</li>';
+    addItems.reset();
+  }
+
+  addItems.addEventListener('submit', newItem);
+  itemsList.addEventListener('click', checkItem);
+  deleteButton.addEventListener('click', deleteAll);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  // let items;
+  // localStorage.getItem('items') ? items = JSON.parse(localStorage.getItem('items')) : items = [];
+  // populateList(items, itemsList);
+  
+  // function populateList(items=[], displayDOM) {
+  //   if (!items[0]) return;
+  //   const displayHTML = items.map((item, i) => {
+  //     return `
+  //       <li>
+  //         <input type="checkbox" id="item${i}" ${item.checked && 'checked'}/>
+  //         <label for="item${i}">${item.itemName}</label>
+  //       </li>
+  //     `
+  //   }).join('');
+  //   itemsList.innerHTML = displayHTML;
+  // }
+
+  // function updateList(e) {
+  //   e.preventDefault();
+  //   const itemInput = document.querySelector('input[name="item"]').value;
+  //   items.push({
+  //     itemName: itemInput,
+  //     checked: false
+  //   });
+  //   populateList(items, itemsList);
+  //   localStorage.setItem('items', JSON.stringify(items));
+  //   this.reset();
+  // }
+
+  // addItems.addEventListener('submit', updateList);
 
 </script>
 
