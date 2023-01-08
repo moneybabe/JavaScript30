@@ -79,8 +79,8 @@ function paintToCanvas() {
         // pixels = redEffect(pixels);
         // pixels = rgbSplit(pixels);
         // ctx.globalAlpha = 0.2;
-        // put the pixels back
         greenScreen(pixels);
+        // put the pixels back
         ctx.putImageData(pixels, 0, 0);
         // console.log(pixels);
         // debugger;
