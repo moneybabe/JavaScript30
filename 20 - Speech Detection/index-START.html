@@ -11,6 +11,36 @@
 
 <script>
   window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  
+  const recognition = new SpeechRecognition();
+  recognition.interimResults = true;
+  recognition.lang = 'en-US';
+  
+  const words = document.querySelector('.words');
+  
+  // initializing the first paragraph
+  let p = document.createElement('p');
+  words.append(p);
+
+  recognition.addEventListener('result', e => {
+    const transcript = [...e.results].map(result => result[0].transcript).join('');
+    
+    // amending the textContent in the created paragraph
+    p.textContent = transcript;
+    
+    console.log(e.results);
+
+    if (e.results[0].isFinal) {
+      // replace para with a new empty para for next time voice activation
+      p = document.createElement('p');
+      words.appendChild(p); 
+    }
+  });
+
+  recognition.addEventListener('end', recognition.start);
+
+  recognition.start();
+
 
 
 </script>
